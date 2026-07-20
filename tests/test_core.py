@@ -35,10 +35,10 @@ def test_format_lead_escapes_user_content():
     lead = {
         "need": "<script>",
         "problem": "Не работает",
-        "location": "Москва",
+        "location": "Example City",
         "urgency": "Сегодня",
         "name": "Иван & Ко",
-        "contact": "@ivan",
+        "contact": "demo-contact",
     }
     message = main.format_lead(CONFIG, lead, 42, "user_name")
     assert "&lt;script&gt;" in message
@@ -51,14 +51,14 @@ def test_save_lead_writes_header_and_row(tmp_path, monkeypatch):
     lead = {
         "need": "Настройка",
         "problem": "Ошибка",
-        "location": "Москва",
+        "location": "Example City",
         "urgency": "Завтра",
-        "name": "Сергей",
-        "contact": "@sergey",
+        "name": "Alex",
+        "contact": "demo-contact",
     }
     main.save_lead(7, "sergey", lead)
 
     rows = list(csv.DictReader((tmp_path / "leads.csv").open(encoding="utf-8-sig")))
     assert len(rows) == 1
     assert rows[0]["user_id"] == "7"
-    assert rows[0]["contact"] == "@sergey"
+    assert rows[0]["contact"] == "demo-contact"
